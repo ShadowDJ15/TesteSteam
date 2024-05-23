@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenCritic API Demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#search-form').submit(function(event) {
+        event.preventDefault();
+        var searchTerm = $('#search-input').val();
+        $.ajax({
+            url: 'https://opencritic-api.p.rapidapi.com/api/game/search',
+            method: 'GET',  // Specify the method if not already
+            headers: {
+                'X-RapidAPI-Key': 'e1bd25f261mshff0ffa3746cb4e7p1a3becjsn5861e85bc69a',
+                'X-RapidAPI-Host': 'opencritic-api.p.rapidapi.com'
+            },
+            data: {
+                'q': searchTerm
+            },
+            success: function(data) {
+                var resultsHtml = '';
+                $.each(data.results, function(index, game) {
+                    resultsHtml += '<div class="card mb-3">';
+                    resultsHtml += '  <h5 class="card-title">' + game.name + '</h5>';
+                    resultsHtml += '  <p class="card-text">Critic score: ' + game.criticScore + '</p>';
+                    resultsHtml += '</div>';
+                });
+                $('#search-results').html(resultsHtml);
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    });
+});
+</script>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">OpenCritic API Demo</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="display-4">OpenCritic API Demo</h1>
+        <p class="lead">Search for games and view their critic scores.</p>
+        <form id="search-form">
+            <div class="form-group">
+                <label for="search-input">Search for a game:</label>
+                <input type="text" class="form-control" id="search-input" placeholder="Enter a game title">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <div id="search-results">
+            <!-- search results will be displayed here -->
+        </div>
+    </div>
+</body>
+</html>
