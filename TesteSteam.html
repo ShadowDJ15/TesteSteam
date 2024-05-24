@@ -13,7 +13,7 @@
                 event.preventDefault();
                 var searchTerm = $('#search-input').val();
                 try {
-                    const response = await fetch('https://opencritic-api.p.rapidapi.com/game/search?q=' + encodeURIComponent(searchTerm), {
+                    const response = await fetch('https://opencritic-api.p.rapidapi.com/game/search?criteria=' + encodeURIComponent(searchTerm), {
                         method: 'GET',
                         headers: {
                             'X-RapidAPI-Key': 'e1bd25f261mshff0ffa3746cb4e7p1a3becjsn5861e85bc69a',
@@ -25,7 +25,8 @@
                     }
                     const data = await response.json();
                     var resultsHtml = '';
-                    $.each(data.results, function(index, game) {
+
+                    $.each(data, function(index, game) {
                         resultsHtml += '<div class="card mb-3">';
                         resultsHtml += '  <h5 class="card-title">' + game.name + '</h5>';
                         resultsHtml += '  <p class="card-text">Critic score: ' + game.criticScore + '</p>';
